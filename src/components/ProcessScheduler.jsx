@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 const ProcessScheduler = () => {
-  const [selectedAlgo, setSelectedAlgo] = useState("FCFS");
+  const [selectedAlgo, setSelectedAlgo] = useState(["FCFS"]);
+  const [showSelectedAlgo, setShowSelectedAlgo] = useState('FCFS')
   const [displayTable, setDisplayTable] = useState(false);
+
   const algorithms = [
     "FCFS",
     "SJF",
@@ -13,13 +15,15 @@ const ProcessScheduler = () => {
   ];
 
   const handleAlgoChange = (event) => {
-    setSelectedAlgo(event.target.value);
+    const value = event.target.value;
+    setShowSelectedAlgo(value);
+    setSelectedAlgo([...selectedAlgo, value]);
   };
 
   const handleAddButton = () => {
     setDisplayTable((prevState) => !prevState);
   };
-
+{console.log(selectedAlgo)}
   return (
     <div class="p-3 grid grid-cols-1 gap-4 lg:grid-cols-3 lg:gap-8">
       <div class="h-32 rounded-lg">
@@ -38,7 +42,7 @@ const ProcessScheduler = () => {
                   id={algo}
                   name="algo"
                   value={algo}
-                  checked={selectedAlgo === algo}
+                  checked={showSelectedAlgo === algo}
                   onChange={handleAlgoChange}
                   className="form-radio h-5 w-5 text-indigo-600 transition duration-150 ease-in-out"
                 />
@@ -55,7 +59,7 @@ const ProcessScheduler = () => {
             <p className="text-sm font-semibold text-indigo-700">
               Selected Algorithm:
             </p>
-            <p className="text-lg font-bold text-indigo-900">{selectedAlgo}</p>
+            <p className="text-lg font-bold text-indigo-900">{showSelectedAlgo}</p>
             <button onClick={handleAddButton} className="bg-indigo-100">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
