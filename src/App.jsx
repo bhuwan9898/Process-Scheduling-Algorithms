@@ -3,7 +3,7 @@ import ProcessScheduler from "./components/ProcessScheduler";
 function App() {
   return (
     <>
-      <ProcessScheduler/>
+     <ProcessScheduler/>
     </>
   );
 }
