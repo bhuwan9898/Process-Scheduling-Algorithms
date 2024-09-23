@@ -96,7 +96,7 @@ const ProcessScheduler = () => {
               name="algorithm"
               value={selectedAlgorithm}
               onChange={handleAlgorithmChange}
-              className="mt-1 block w-full pl-3 pr-10 py-2 text-base bg-blue-100 border-gray-500 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
+              className="mt-1 block w-full pl-3 pr-10 py-3 text-base bg-teal-400 border-gray-500 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
             >
               {algorithms.map((algo) => (
                 <option key={algo} value={algo}>
@@ -114,9 +114,8 @@ const ProcessScheduler = () => {
             <div className="rounded-lg bg-white lg:col-span-3 lg:p-12">
               <form onSubmit={handleAddButton} className="space-y-4">
                 <h1>Add your customized processes:</h1>
-
                 <input
-                  className="w-full rounded-lg bg-blue-100 p-3"
+                  className="w-full placeholder-black rounded-lg bg-red-300 p-3"
                   placeholder="Process Name"
                   type="text"
                   name="processName"
@@ -128,7 +127,7 @@ const ProcessScheduler = () => {
                 </label>
 
                 <input
-                  className="w-full rounded-lg bg-blue-100 p-3"
+                  className="w-full rounded-lg bg-red-300 p-3"
                   placeholder="Arrival Time"
                   type="number"
                   min="0"
@@ -141,7 +140,7 @@ const ProcessScheduler = () => {
                 </label>
 
                 <input
-                  className="w-full rounded-lg bg-blue-100 p-3"
+                  className="w-full rounded-lg bg-red-300 p-3"
                   placeholder="Burst Time"
                   type="number"
                   min="1"
@@ -155,7 +154,7 @@ const ProcessScheduler = () => {
                 <div className="mt-4">
                   <button
                     type="submit"
-                    className="inline-block w-full rounded-3xl bg-black px-5 py-3 font-medium text-white sm:w-auto"
+                    className="inline-block w-full rounded-3xl bg-gray-500 px-5 py-3 font-medium text-white sm:w-auto"
                   >
                     Add Process
                   </button>
@@ -166,23 +165,17 @@ const ProcessScheduler = () => {
         </div>
         {/* Display the process list in a table */}
         <div className="lg:col-span-2 mt-8 p-2">
-          <h4 className="text-2xl font-bold mb-4">{"Process List:"}</h4>
+          <h4 className="text-2xl font-bold mb-4">Process List</h4>
           <h1>
-            <i>You can delete the default process once you add one</i>
+            <i>You can delete the default process once you add new one</i>
           </h1>
           <table className="min-w-full bg-white mt-2">
             <thead>
-              <tr>
-                <th className="py-2 px-4 bg-blue-100 text-center">
-                  Process Name
-                </th>
-                <th className="py-2 px-4 bg-blue-100 text-center">
-                  Arrival Time
-                </th>
-                <th className="py-2 px-4 bg-blue-100 text-center">
-                  Burst Time
-                </th>
-                <th className="py-2 px-4 bg-blue-100 text-center">Actions</th>
+              <tr className="bg-red-300">
+                <th className="py-2 px-4  text-center">Process Name</th>
+                <th className="py-2 px-4 text-center">Arrival Time</th>
+                <th className="py-2 px-4  text-center">Burst Time</th>
+                <th className="py-2 px-4  text-center">Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -219,12 +212,18 @@ const ProcessScheduler = () => {
               ))}
             </tbody>
           </table>
-          <button
-            onClick={handleRunButton}
-            className=" w-full rounded-3xl bg-black mt-3 px-5 py-3 font-medium text-white sm:w-auto"
-          >
-            Run
-          </button>
+          <div className="flex flex-col items-center">
+            <button
+              onClick={handleRunButton}
+              className=" w-full rounded-3xl bg-green-600 mt-3 px-5 py-3 font-bold text-white sm:w-auto"
+            >
+              Run
+            </button>
+            {runClicked && (
+              <iframe src="https://lottie.host/embed/7a782088-b6c5-41fc-9667-d6c65aa66c88/qcAbcIglZu.json"></iframe>
+            )}
+          </div>
+
           {/* show the gnatt chart when the run button is clicked*/}
           {runClicked && <GanttCharts graphData={graphData} />}
         </div>
