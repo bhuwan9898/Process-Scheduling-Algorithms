@@ -1,10 +1,16 @@
 import React, { useState } from "react";
-
+import { fcfs } from "../algorithms/schedulingAlgotrithms";
+import GanttCharts from "./GanttCharts";
 const ProcessScheduler = () => {
-  const [selectedAlgorithmsList, setSelectedAlgorithmsList] = useState([
-    { name: "FCFS", arrivalTime: 0, burstTime: 0 },
+  const [selectedProcessList, setSelectedProcessList] = useState([
+    { processName: "Default Process", arrivalTime: 1, burstTime: 0 },
   ]);
   const [selectedAlgorithm, setSelectedAlgorithm] = useState("FCFS");
+  const [formValues, setFormValues] = useState({
+    processName: "",
+    arrivalTime: 0,
+    burstTime: 0,
+  });
 
   const algorithms = [
     "FCFS",
@@ -15,171 +21,190 @@ const ProcessScheduler = () => {
     "LRTF",
     "HRRN",
   ];
-  //for the form with radio button
+
   const handleAlgorithmChange = (event) => {
     const value = event.target.value;
     setSelectedAlgorithm(value);
   };
-  //this willl handle the add button which will add the algorithm to the list
-  const handleAddButton = () => {
-    setSelectedAlgorithmsList([
-      ...selectedAlgorithmsList,
-      { name: selectedAlgorithm, arrivalTime: 0, burstTime: 0 },
+
+  const handleAddButton = (event) => {
+    event.preventDefault(); // Prevents the form from reloading the page
+    console.log(formValues); // This will log the current form values
+    setSelectedProcessList([
+      ...selectedProcessList,
+      { ...formValues }, // Add the new process to the list
     ]);
-  };
-  //this will keep track of the changes made in the arrival time and Burst time within the table
-  const handleInputChange = (index, field, value) => {
-    const updatedData = [...selectedAlgorithmsList];
-    updatedData[index][field] = value;
-    setSelectedAlgorithmsList(updatedData);
-    console.log(selectedAlgorithmsList);
-  };
-  const handleDelete = (index) => {
-    const updatedAlgorithms = selectedAlgorithmsList.filter(
-      (_, i) => i !== index
-    );
-    setSelectedAlgorithmsList(updatedAlgorithms);
+    setFormValues({ processName: "", arrivalTime: 0, burstTime: 0 }); // Clear the form fields
   };
 
+  const handleInputChange = (event) => {
+    const { name, value } = event.target;
+    setFormValues((prevValues) => ({
+      ...prevValues,
+      [name]: value,
+    }));
+  };
+
+  const handleDelete = (index) => {
+    const updatedAlgorithms = selectedProcessList.filter((_, i) => i !== index);
+    setSelectedProcessList(updatedAlgorithms);
+  };
+  const handleRunButton = () => {
+    console.log(fcfs(selectedProcessList));
+  };
   return (
-    <div className="p-3 grid grid-cols-1 gap-4 lg:grid-cols-3 lg:gap-8">
-      <div className="h-32 rounded-lg">
-        <div className="rounded-lg shadow-xl p-6 w-full max-w-md">
-          <h3 className="text-2xl font-bold mb-6 text-indigo-500 text-center">
+    <>
+      <div className="grid grid-cols-1 gap-4 lg:grid-cols-3 lg:gap-8">
+        <div className="rounded-lg shadow-xl p-6 m-6 w-full max-w-3xl">
+          <h3 className="text-2xl font-bold mb-6 text-center">
             Process Scheduler
           </h3>
-          <h3 className="text-2xl  mb-6 text-indigo-500">
-            Choose your algorithm
-          </h3>
           <form className="space-y-4">
-            {algorithms.map((algo) => (
-              <div key={algo} className="flex items-center">
-                <input
-                  type="radio"
-                  id={algo}
-                  name="algo"
-                  value={algo}
-                  checked={selectedAlgorithm === algo}
-                  onChange={handleAlgorithmChange}
-                  className="form-radio h-5 w-5 text-indigo-600 transition duration-150 ease-in-out"
-                />
-                <label
-                  htmlFor={algo}
-                  className="ml-3 block text-sm font-medium text-gray-700 cursor-pointer hover:text-indigo-600 transition duration-150 ease-in-out"
-                >
+            <label
+              htmlFor="algorithm"
+              className="block text-2xl font-medium text-gray-700"
+            >
+              Select an algorithm:
+            </label>
+            <select
+              id="algorithm"
+              name="algorithm"
+              value={selectedAlgorithm}
+              onChange={handleAlgorithmChange}
+              className="mt-1 block w-full pl-3 pr-10 py-2 text-base bg-blue-100 border-gray-500 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
+            >
+              {algorithms.map((algo) => (
+                <option key={algo} value={algo}>
                   {algo}
-                </label>
-              </div>
-            ))}
+                </option>
+              ))}
+            </select>
           </form>
-          <div className="flex gap-3 items-center mt-8 p-4 bg-indigo-100 rounded-md">
-            <p className="text-sm font-semibold text-indigo-700">
-              Selected Algorithm:
-            </p>
-            <p className="text-lg font-bold text-indigo-900">
-              {selectedAlgorithm}
-            </p>
-            <button onClick={handleAddButton} className="bg-indigo-100">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth={1.5}
-                stroke="currentColor"
-                className="size-6"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M12 4.5v15m7.5-7.5h-15"
+
+          <div className="flex gap-3 items-center mt-8 p-4 rounded-md">
+            <p className="text-sm font-semibold">Selected Algorithm:</p>
+            <p className="text-lg font-bold">{selectedAlgorithm}</p>
+          </div>
+          <div className="w-full">
+            <div className="rounded-lg bg-white lg:col-span-3 lg:p-12">
+              <form onSubmit={handleAddButton} className="space-y-4">
+                <h1>Add your customized processes:</h1>
+
+                <input
+                  className="w-full rounded-lg bg-blue-100 p-3"
+                  placeholder="Process Name"
+                  type="text"
+                  name="processName"
+                  value={formValues.processName}
+                  onChange={handleInputChange}
                 />
-              </svg>
-            </button>
+                <label className="" htmlFor="processName">
+                  Process Name
+                </label>
+
+                <input
+                  className="w-full rounded-lg bg-blue-100 p-3"
+                  placeholder="Arrival Time"
+                  type="number"
+                  min="0"
+                  name="arrivalTime"
+                  value={formValues.arrivalTime}
+                  onChange={handleInputChange}
+                />
+                <label className="" htmlFor="arrivalTime">
+                  Arrival Time
+                </label>
+
+                <input
+                  className="w-full rounded-lg bg-blue-100 p-3"
+                  placeholder="Burst Time"
+                  type="number"
+                  min="1"
+                  name="burstTime"
+                  value={formValues.burstTime}
+                  onChange={handleInputChange}
+                />
+                <label className="" htmlFor="burstTime">
+                  Burst Time
+                </label>
+                <div className="mt-4">
+                  <button
+                    type="submit"
+                    className="inline-block w-full rounded-3xl bg-black px-5 py-3 font-medium text-white sm:w-auto"
+                  >
+                    Add Process
+                  </button>
+                </div>
+              </form>
+            </div>
           </div>
         </div>
-      </div>
-      {
-        <div className="rounded-lg lg:col-span-2">
-          <div className="overflow-x-auto rounded-lg border">
-            <table className="min-w-full divide-y-2 divide-gray-200 bg-white text-sm">
-              <thead className="ltr:text-left rtl:text-right">
-                <tr className="bg-indigo-300  divide-x-2 divide-indigo-900">
-                  <th className="whitespace-nowrap px-4 py-2 font-bold text-gray-900 text-lg">
-                    Process ID
-                  </th>
-                  <th className="whitespace-nowrap px-4 py-2 font-bold text-gray-900 text-lg">
-                    Arrival Time
-                  </th>
-                  <th className="whitespace-nowrap px-4 py-2 font-bold text-gray-900 text-lg">
-                    {"Burst Time(CPU)"}
-                  </th>
-                  <th />
-                </tr>
-              </thead>
-              <tbody className="divide-y-2 divide-indigo-900 bg-indigo-100">
-            
-      
-                {selectedAlgorithmsList.map((algorithm, index) => (
-                  <tr key={index} className="divide-x-2 divide-indigo-900">
-                    <td className="whitespace-nowrap px-4 py-2 font-semibold text-gray-900">
-                      {algorithm.name}
-                    </td>
-                    <td className="whitespace-nowrap px-4 py-2 text-gray-700">
-                      <input
-                        type="number"
-                        min="0"
-                        step="1"
-                        value={algorithm.arrivalTime}
-                        onChange={(e) =>
-                          handleInputChange(
-                            index,
-                            "arrivalTime",
-                            e.target.value
-                          )
-                        }
-                        className="w-full h-7 bg-indigo-200 rounded text-center font-mono font-semibold"
-                      />
-                    </td>
-                    <td className="whitespace-nowrap px-4 py-2 text-gray-700">
-                      <input
-                        type="number"
-                        min="0"
-                        step="1"
-                        value={algorithm.burstTime}
-                        onChange={(e) =>
-                          handleInputChange(index, "burstTime", e.target.value)
-                        }
-                        className="w-full h-7 bg-indigo-200 text-center font-mono font-semibold"
-                      />
-                    </td>
-                    <td className="whitespace-nowrap px-4 py-2 text-gray-700">
+        {/* Display the process list in a table */}
+        <div className="lg:col-span-2 mt-8 p-2">
+          <h4 className="text-2xl font-bold mb-4">{"Process List:"}</h4>
+          <h1>
+            <i>You can delete the default process once you add one</i>
+          </h1>
+          <table className="min-w-full bg-white mt-2">
+            <thead>
+              <tr>
+                <th className="py-2 px-4 bg-blue-100 text-center">
+                  Process Name
+                </th>
+                <th className="py-2 px-4 bg-blue-100 text-center">
+                  Arrival Time
+                </th>
+                <th className="py-2 px-4 bg-blue-100 text-center">
+                  Burst Time
+                </th>
+                <th className="py-2 px-4 bg-blue-100 text-center">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {selectedProcessList.map((process, index) => (
+                <tr key={index}>
+                  <td className="border px-4 py-2">{process.processName}</td>
+                  <td className="border px-4 py-2">{process.arrivalTime}</td>
+                  <td className="border px-4 py-2">{process.burstTime}</td>
+                  <td className="border px-4 py-2">
+                    {/* Conditionally render the delete button if there is more than 1 process */}
+                    {selectedProcessList.length > 1 && (
                       <button
+                        className="text-red-500 px-3 py-1 rounded"
                         onClick={() => handleDelete(index)}
-                        className="text-red-500 hover:text-red-700 transition-colors duration-200"
                       >
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
                           viewBox="0 0 24 24"
-                          fill="currentColor"
-                          className="size-5"
+                          strokeWidth={1.5}
+                          stroke="currentColor"
+                          className="size-6"
                         >
                           <path
-                            fillRule="evenodd"
-                            d="M16.5 4.478v.227a48.816 48.816 0 0 1 3.878.512.75.75 0 1 1-.256 1.478l-.209-.035-1.005 13.07a3 3 0 0 1-2.991 2.77H8.084a3 3 0 0 1-2.991-2.77L4.087 6.66l-.209.035a.75.75 0 0 1-.256-1.478A48.567 48.567 0 0 1 7.5 4.705v-.227c0-1.564 1.213-2.9 2.816-2.951a52.662 52.662 0 0 1 3.369 0c1.603.051 2.815 1.387 2.815 2.951Zm-6.136-1.452a51.196 51.196 0 0 1 3.273 0C14.39 3.05 15 3.684 15 4.478v.113a49.488 49.488 0 0 0-6 0v-.113c0-.794.609-1.428 1.364-1.452Zm-.355 5.945a.75.75 0 1 0-1.5.058l.347 9a.75.75 0 1 0 1.499-.058l-.346-9Zm5.48.058a.75.75 0 1 0-1.498-.058l-.347 9a.75.75 0 0 0 1.5.058l.345-9Z"
-                            clipRule="evenodd"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0"
                           />
                         </svg>
                       </button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-          <button>Run</button>
+                    )}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+          <button
+            onClick={handleRunButton}
+            className=" w-full rounded-3xl bg-black mt-3 px-5 py-3 font-medium text-white sm:w-auto"
+          >
+            Run
+          </button>
+          {/* show the gnatt chart */}
+          <GanttCharts />
         </div>
-      }
-    </div>
+      </div>
+    </>
   );
 };
 
