@@ -1,12 +1,16 @@
 import { useState } from "react";
 import { Chart as ChartJS } from "chart.js/auto";
 import { Bar, Doughnut, Line } from "react-chartjs-2";
+import ProcessScheduled from "./ProcessScheduled";
 function GanttCharts(props) {
   const [showPieChart, setShowPieChart] = useState(false);
   let graphData = props.graphData;
   console.log(graphData);
   return (
-    <div className="grid grid-cols-1  justify-items-center gap-4  lg:gap-8">
+    <div className="grid grid-cols-1 p-2 justify-items-center gap-4  lg:gap-8">
+      <div className="h-96 w-full rounded-lg shadow-md bg-white">
+        <ProcessScheduled graphData={graphData} />
+      </div>
       <div>
         <button
           onClick={() => {
@@ -136,8 +140,38 @@ function GanttCharts(props) {
           />
         )}
       </div>
+      <div className="grid justify-items-center h-96 w-full rounded-lg shadow-md bg-white">
+        <Bar
+          data={{
+            labels: graphData.map((data) => data.processName),
+            datasets: [
+              {
+                label: "Waiting Time",
+                data: graphData.map((data) => data.waitingTime),
+                backgroundColor: [
+                  "#2ec4b6",
+                  "#ff6f61",
+                  "#f77f00",
+                  "#ff9bcb",
+                  "#cdb4db",
+                  "#f4a261",
 
-      <div className="h-96 rounded-lg shadow-md bg-white"></div>
+                  // Neutrals
+                  "#333333",
+                  "#8d99ae",
+                  "#f7f7f7",
+                  "#b0b0b0",
+
+                  // Accent Colors
+                  "#3a86ff",
+                  "#80ed99",
+                  "#ff595e",
+                ],
+              },
+            ],
+          }}
+        />
+      </div>
     </div>
   );
 }

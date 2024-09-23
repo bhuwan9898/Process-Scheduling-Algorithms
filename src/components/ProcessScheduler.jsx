@@ -80,7 +80,7 @@ const ProcessScheduler = () => {
   return (
     <>
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-3 lg:gap-8">
-        <div className="rounded-lg shadow-xl p-6 m-6 w-full max-w-3xl bg-white">
+        <div className="h-fit rounded-lg shadow-xl p-6 m-6 w-full max-w-3xl bg-white">
           <h3 className="text-2xl font-bold mb-6 text-center">
             Process Scheduler
           </h3>
