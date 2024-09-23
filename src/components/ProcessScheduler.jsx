@@ -1,11 +1,21 @@
 import React, { useState } from "react";
-import { fcfs } from "../algorithms/schedulingAlgotrithms";
+import { fcfs, sjf } from "../algorithms/schedulingAlgotrithms";
 import GanttCharts from "./GanttCharts";
+
 const ProcessScheduler = () => {
   const [selectedProcessList, setSelectedProcessList] = useState([
-    { processName: "Default Process", arrivalTime: 1, burstTime: 0 },
+    {
+      processName: "Default Process",
+      arrivalTime: 1,
+      burstTime: 1,
+      completionTime: 1,
+      waitingTime: 1,
+      turnAroundTime: 1,
+    },
   ]);
   const [selectedAlgorithm, setSelectedAlgorithm] = useState("FCFS");
+  const [runClicked, setRunClicked] = useState(false);
+  const [graphData, setGraphData] = useState(null);
   const [formValues, setFormValues] = useState({
     processName: "",
     arrivalTime: 0,
@@ -50,12 +60,27 @@ const ProcessScheduler = () => {
     setSelectedProcessList(updatedAlgorithms);
   };
   const handleRunButton = () => {
-    console.log(fcfs(selectedProcessList));
+    let data;
+    switch (selectedAlgorithm) {
+      case "FCFS":
+        data = fcfs(selectedProcessList);
+        break;
+      case "SJF":
+        data = sjf(selectedProcessList);
+        break;
+      // Other functions accordingly...
+      default:
+        console.error("Unknown algorithm selected");
+        return;
+    }
+    setGraphData(data);
+    setRunClicked(true);
   };
+
   return (
     <>
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-3 lg:gap-8">
-        <div className="rounded-lg shadow-xl p-6 m-6 w-full max-w-3xl">
+        <div className="rounded-lg shadow-xl p-6 m-6 w-full max-w-3xl bg-white">
           <h3 className="text-2xl font-bold mb-6 text-center">
             Process Scheduler
           </h3>
@@ -200,8 +225,8 @@ const ProcessScheduler = () => {
           >
             Run
           </button>
-          {/* show the gnatt chart */}
-          <GanttCharts />
+          {/* show the gnatt chart when the run button is clicked*/}
+          {runClicked && <GanttCharts graphData={graphData} />}
         </div>
       </div>
     </>
