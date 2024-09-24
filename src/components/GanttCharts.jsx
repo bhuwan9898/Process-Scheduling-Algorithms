@@ -141,36 +141,70 @@ function GanttCharts(props) {
         )}
       </div>
       <div className="grid justify-items-center h-96 w-full rounded-lg shadow-md bg-white">
-        <Bar
-          data={{
-            labels: graphData.map((data) => data.processName),
-            datasets: [
-              {
-                label: "Waiting Time",
-                data: graphData.map((data) => data.waitingTime),
-                backgroundColor: [
-                  "#2ec4b6",
-                  "#ff6f61",
-                  "#f77f00",
-                  "#ff9bcb",
-                  "#cdb4db",
-                  "#f4a261",
+        {!showPieChart && (
+          <Bar
+            data={{
+              labels: graphData.map((data) => data.processName),
+              datasets: [
+                {
+                  label: "Waiting Time",
+                  data: graphData.map((data) => data.waitingTime),
+                  backgroundColor: [
+                    "#2ec4b6",
+                    "#ff6f61",
+                    "#f77f00",
+                    "#ff9bcb",
+                    "#cdb4db",
+                    "#f4a261",
 
-                  // Neutrals
-                  "#333333",
-                  "#8d99ae",
-                  "#f7f7f7",
-                  "#b0b0b0",
+                    // Neutrals
+                    "#333333",
+                    "#8d99ae",
+                    "#f7f7f7",
+                    "#b0b0b0",
 
-                  // Accent Colors
-                  "#3a86ff",
-                  "#80ed99",
-                  "#ff595e",
-                ],
-              },
-            ],
-          }}
-        />
+                    // Accent Colors
+                    "#3a86ff",
+                    "#80ed99",
+                    "#ff595e",
+                  ],
+                },
+              ],
+            }}
+          />
+        )}
+        {showPieChart && (
+          <Doughnut
+            data={{
+              labels: graphData.map((data) => data.processName),
+              datasets: [
+                {
+                  label: "Waiting Time",
+                  data: graphData.map((data) => data.waitingTime),
+                  backgroundColor: [
+                    "#2ec4b6",
+                    "#ff6f61",
+                    "#f77f00",
+                    "#ff9bcb",
+                    "#cdb4db",
+                    "#f4a261",
+
+                    // Neutrals
+                    "#333333",
+                    "#8d99ae",
+                    "#f7f7f7",
+                    "#b0b0b0",
+
+                    // Accent Colors
+                    "#3a86ff",
+                    "#80ed99",
+                    "#ff595e",
+                  ],
+                },
+              ],
+            }}
+          />
+        )}
       </div>
     </div>
   );

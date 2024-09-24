@@ -96,7 +96,7 @@ const ProcessScheduler = () => {
               name="algorithm"
               value={selectedAlgorithm}
               onChange={handleAlgorithmChange}
-              className="mt-1 block w-full pl-3 pr-10 py-3 text-base bg-teal-400 border-gray-500 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
+              className="mt-1 block w-full pl-3 pr-10 py-3 text-base bg-gray-300 border-gray-500  sm:text-sm rounded-md"
             >
               {algorithms.map((algo) => (
                 <option key={algo} value={algo}>
@@ -112,22 +112,21 @@ const ProcessScheduler = () => {
           </div>
           <div className="w-full">
             <div className="rounded-lg bg-white lg:col-span-3 lg:p-12">
-              <form onSubmit={handleAddButton} className="space-y-4">
-                <h1>Add your customized processes:</h1>
+              <form onSubmit={handleAddButton} className="space-y-2">
+                <h1 className="mb-2">Add your customized processes:</h1>
+                <label htmlFor="processName">Process Name</label>
                 <input
-                  className="w-full placeholder-black rounded-lg bg-red-300 p-3"
+                  className="w-full placeholder-black bg-gray-200 rounded-lg p-3"
                   placeholder="Process Name"
                   type="text"
                   name="processName"
                   value={formValues.processName}
                   onChange={handleInputChange}
                 />
-                <label className="" htmlFor="processName">
-                  Process Name
-                </label>
+                <label htmlFor="arrivalTime">Arrival Time</label>
 
                 <input
-                  className="w-full rounded-lg bg-red-300 p-3"
+                  className="w-full rounded-lg bg-gray-200 p-3"
                   placeholder="Arrival Time"
                   type="number"
                   min="0"
@@ -135,12 +134,9 @@ const ProcessScheduler = () => {
                   value={formValues.arrivalTime}
                   onChange={handleInputChange}
                 />
-                <label className="" htmlFor="arrivalTime">
-                  Arrival Time
-                </label>
-
+                <label htmlFor="burstTime">Burst Time</label>
                 <input
-                  className="w-full rounded-lg bg-red-300 p-3"
+                  className="w-full rounded-lg bg-gray-200 p-3"
                   placeholder="Burst Time"
                   type="number"
                   min="1"
@@ -148,13 +144,11 @@ const ProcessScheduler = () => {
                   value={formValues.burstTime}
                   onChange={handleInputChange}
                 />
-                <label className="" htmlFor="burstTime">
-                  Burst Time
-                </label>
+
                 <div className="mt-4">
                   <button
                     type="submit"
-                    className="inline-block w-full rounded-3xl bg-gray-500 px-5 py-3 font-medium text-white sm:w-auto"
+                    className="inline-block w-full rounded-3xl bg-indigo-600 px-5 py-3 font-medium text-white sm:w-auto"
                   >
                     Add Process
                   </button>
@@ -171,7 +165,7 @@ const ProcessScheduler = () => {
           </h1>
           <table className="min-w-full bg-white mt-2">
             <thead>
-              <tr className="bg-red-300">
+              <tr className="bg-indigo-600 text-white">
                 <th className="py-2 px-4  text-center">Process Name</th>
                 <th className="py-2 px-4 text-center">Arrival Time</th>
                 <th className="py-2 px-4  text-center">Burst Time</th>
@@ -215,7 +209,7 @@ const ProcessScheduler = () => {
           <div className="flex flex-col items-center">
             <button
               onClick={handleRunButton}
-              className=" w-full rounded-3xl bg-green-600 mt-3 px-5 py-3 font-bold text-white sm:w-auto"
+              className=" w-full rounded-3xl bg-indigo-600 mt-3 px-5 py-3 font-bold text-white sm:w-auto"
             >
               Run
             </button>

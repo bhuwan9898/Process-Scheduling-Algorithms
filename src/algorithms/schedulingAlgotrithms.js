@@ -14,7 +14,7 @@ export function fcfs(processList) {
       const completionTime = currentTime + burstTime; // Ensure addition is done with numbers
   
       // Calculate waiting time
-      const waitingTime = currentTime - arrivalTime;
+      const waitingTime =  Math. abs(currentTime - arrivalTime);
   
       // Calculate turnaround time
       const turnaroundTime = completionTime - arrivalTime;

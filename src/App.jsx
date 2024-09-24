@@ -1,10 +1,14 @@
-import "./App.css";
 import ProcessScheduler from "./components/ProcessScheduler";
-import StackedBarChart from "./components/ProcessScheduled";
+import Footer from "./components/Footer";
+import Sections from "./components/Sections";
+import Navigation from "./components/Navigation";
 function App() {
   return (
     <>
+      <Navigation />
+      <Sections />
       <ProcessScheduler />
+      <Footer />
     </>
   );
 }
