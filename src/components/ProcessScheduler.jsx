@@ -125,6 +125,7 @@ const ProcessScheduler = () => {
                   placeholder="Process Name"
                   type="text"
                   name="processName"
+                  required
                   value={formValues.processName}
                   onChange={handleInputChange}
                 />

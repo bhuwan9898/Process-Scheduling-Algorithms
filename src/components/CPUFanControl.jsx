@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-const CpuFanControl = ({onRunClick, onStopClick}) => {
+const CpuFanControl = ({ onRunClick, onStopClick }) => {
   const [isFanOn, setIsFanOn] = useState(false);
 
   return (
@@ -28,21 +28,18 @@ const CpuFanControl = ({onRunClick, onStopClick}) => {
         <div className="mt-5 flex gap-2">
           <button
             className="px-4 py-2 text-white bg-green-600 rounded hover:bg-green-500 transition"
-            onClick={
-                () => 
-                    {
-                        setIsFanOn(true);
-                        onRunClick();
-                    }
-            }
+            onClick={() => {
+              setIsFanOn(true);
+              onRunClick();
+            }}
           >
             Run
           </button>
           <button
             className="px-4 py-2 text-white bg-red-600 rounded hover:bg-red-500 transition"
             onClick={() => {
-                setIsFanOn(false);
-                onStopClick();
+              setIsFanOn(false);
+              onStopClick();
             }}
           >
             Stop
