@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { fcfs, sjf } from "../algorithms/schedulingAlgotrithms";
 import GanttCharts from "./GanttCharts";
+import CpuFanControl from "./CPUFanControl";
 
 const ProcessScheduler = () => {
   const [selectedProcessList, setSelectedProcessList] = useState([
@@ -76,6 +77,10 @@ const ProcessScheduler = () => {
     setGraphData(data);
     setRunClicked(true);
   };
+  const handleStopButton = ()=>{
+    setRunClicked(false);
+
+  }
 
   return (
     <>
@@ -155,8 +160,10 @@ const ProcessScheduler = () => {
                 </div>
               </form>
             </div>
+            <CpuFanControl onRunClick={handleRunButton} onStopClick = {handleStopButton}/>
           </div>
         </div>
+
         {/* Display the process list in a table */}
         <div className="lg:col-span-2 mt-8 p-2">
           <h4 className="text-2xl font-bold mb-4">Process List</h4>
@@ -206,18 +213,6 @@ const ProcessScheduler = () => {
               ))}
             </tbody>
           </table>
-          <div className="flex flex-col items-center">
-            <button
-              onClick={handleRunButton}
-              className=" w-full rounded-3xl bg-indigo-600 mt-3 px-5 py-3 font-bold text-white sm:w-auto"
-            >
-              Run
-            </button>
-            {runClicked && (
-              <iframe src="https://lottie.host/embed/7a782088-b6c5-41fc-9667-d6c65aa66c88/qcAbcIglZu.json"></iframe>
-            )}
-          </div>
-
           {/* show the gnatt chart when the run button is clicked*/}
           {runClicked && <GanttCharts graphData={graphData} />}
         </div>
