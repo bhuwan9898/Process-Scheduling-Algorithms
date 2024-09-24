@@ -5,15 +5,10 @@ const CpuFanControl = ({ onRunClick, onStopClick }) => {
 
   return (
     <div className="flex justify-center items-center h-fit">
-      <div className="flex flex-col items-center justify-center bg-gray-800 w-64 h-96 rounded-lg shadow-lg">
-        <div className="w-full flex items-center justify-between px-10 py-3">
-          <button className="rounded-full w-3 h-3 bg-red-500 shadow-lg"></button>
-          <button className="w-20 h-2 bg-teal-500"></button>
-          <button className="w-7 h-2 bg-green-300"></button>
-        </div>
-        <div className="w-52 h-3 bg-gray-500 mb-2"></div>
-        <div className="w-52 h-3 bg-gray-600 mb-2"></div>
-        <div className="w-32 h-32 bg-zinc-600 rounded-full flex justify-center items-center relative shadow-inner">
+      <div className="flex flex-col items-center justify-center bg-gray-700 w-64 h-96 rounded-lg shadow-lg">
+        <div className="w-52 h-8 bg-gray-500 mb-2"></div>
+        <div className="w-52 h-8 bg-gray-500 mb-2"></div>
+        <div className="w-32 h-32 bg-slate-300 rounded-full flex justify-center items-center relative shadow-inner">
           <div
             className={`w-30 h-30 rounded-full bg-gray-400 flex justify-center items-center relative transition-transform duration-500 ${
               isFanOn ? "animate-spin" : ""
@@ -24,6 +19,11 @@ const CpuFanControl = ({ onRunClick, onStopClick }) => {
             <div className="w-14 h-2 bg-gray-900 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 -rotate-45 rounded shadow-lg" />
             <div className="w-14 h-2 bg-gray-900 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2  rotate-90 rounded shadow-lg" />
           </div>
+        </div>
+        <div className="w-full flex items-center justify-between px-10 py-3">
+          <button className="rounded w-5 h-5 bg-red-500 shadow-lg"></button>
+          <button className="rounded w-5 h-5 bg-teal-500 shadow-lg"></button>
+          <button className=" rounded w-5 h-5 bg-green-300 shadow-lg"></button>
         </div>
         <div className="mt-5 flex gap-2">
           <button

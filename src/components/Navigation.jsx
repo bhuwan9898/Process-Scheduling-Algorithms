@@ -5,10 +5,10 @@ function Navigation() {
     <div>
       <header className="sticky top-0 z-10 bg-white  text-4xl">
         <div className="mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8">
-          <div className="flex h-16 items-center justify-between">
+          <div className="flex h-24 items-center justify-between">
             <div className="md:flex md:items-center md:gap-12">
-              <a className="block text-teal-600" href="#">
-                <span>Home</span>
+              <a className="block  h-fit" href="#">
+                <iframe src="https://lottie.host/embed/584ff8d3-9833-4ccd-8d26-1a9693d148b3/xObMyBulQJ.json"></iframe>
               </a>
             </div>
             <div className="hidden md:block">

@@ -77,10 +77,9 @@ const ProcessScheduler = () => {
     setGraphData(data);
     setRunClicked(true);
   };
-  const handleStopButton = ()=>{
+  const handleStopButton = () => {
     setRunClicked(false);
-
-  }
+  };
 
   return (
     <>
@@ -121,7 +120,7 @@ const ProcessScheduler = () => {
                 <h1 className="mb-2">Add your customized processes:</h1>
                 <label htmlFor="processName">Process Name</label>
                 <input
-                  className="w-full placeholder-black bg-gray-200 rounded-lg p-3"
+                  className="w-full bg-gray-200 rounded-lg p-3"
                   placeholder="Process Name"
                   type="text"
                   name="processName"
@@ -161,7 +160,10 @@ const ProcessScheduler = () => {
                 </div>
               </form>
             </div>
-            <CpuFanControl onRunClick={handleRunButton} onStopClick = {handleStopButton}/>
+            <CpuFanControl
+              onRunClick={handleRunButton}
+              onStopClick={handleStopButton}
+            />
           </div>
         </div>
 
