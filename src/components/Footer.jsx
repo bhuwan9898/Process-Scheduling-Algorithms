@@ -12,7 +12,7 @@ function Footer() {
                 href="https://github.com/bhuwan9898"
                 className="text-gray-700 transition hover:text-gray-700/75"
               >
-                <span class="sr-only">GitHub</span>
+                <span className="sr-only">GitHub</span>
                 <svg
                   className="size-6"
                   fill="currentColor"

@@ -6,7 +6,8 @@ function Sections() {
   return (
     <div>
       <section>
-        <div className="flex mx-auto justify-items-center items-center max-w-screen-xl px-4 py-8 sm:px-6 sm:py-12 lg:px-8 lg:py-16">
+        <div className="grid grid-cols-1 mx-auto h-fit justify-items-center  max-w-screen-xl px-4 py-8 sm:px-6 sm:py-12 lg:px-8 lg:py-16">
+          <p className="text-3xl font-semibold">Welcome to CPU Scheduler Simulator! </p>
           <img src={main}></img>
         </div>
       </section>

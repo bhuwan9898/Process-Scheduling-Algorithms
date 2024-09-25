@@ -13,7 +13,7 @@ function Navigation() {
             </div>
             <div className="hidden md:block">
               <nav aria-label="Global">
-                <ul className="flex items-center gap-6 text-xl">
+                <ul className="flex items-center gap-48 text-xl">
                   <li>
                     <a
                       className="text-gray-500 transition hover:text-gray-500/75"
@@ -23,54 +23,13 @@ function Navigation() {
                       About{" "}
                     </a>
                   </li>
-
                   <li>
                     <a
                       className="text-gray-500 transition hover:text-gray-500/75"
                       href="#"
                     >
                       {" "}
-                      Careers{" "}
-                    </a>
-                  </li>
-
-                  <li>
-                    <a
-                      className="text-gray-500 transition hover:text-gray-500/75"
-                      href="#"
-                    >
-                      {" "}
-                      History{" "}
-                    </a>
-                  </li>
-
-                  <li>
-                    <a
-                      className="text-gray-500 transition hover:text-gray-500/75"
-                      href="#"
-                    >
-                      {" "}
-                      Services{" "}
-                    </a>
-                  </li>
-
-                  <li>
-                    <a
-                      className="text-gray-500 transition hover:text-gray-500/75"
-                      href="#"
-                    >
-                      {" "}
-                      Projects{" "}
-                    </a>
-                  </li>
-
-                  <li>
-                    <a
-                      className="text-gray-500 transition hover:text-gray-500/75"
-                      href="#"
-                    >
-                      {" "}
-                      Blog{" "}
+                      Scheduler{" "}
                     </a>
                   </li>
                 </ul>
