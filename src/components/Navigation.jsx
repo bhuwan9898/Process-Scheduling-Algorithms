@@ -30,13 +30,13 @@ function Navigation({ sectionsRef, schedulerRef }) {
                 <ul className="flex items-center gap-48 text-xl">
                   <li
                     onClick={() => scrollToSection(sectionsRef)}
-                    className="text-gray-500 transition hover:text-gray-500/75"
+                    className="text-gray-500 transition hover:text-gray-500/75 cursor-pointer"
                   >
                     About
                   </li>
                   <li
                     onClick={() => scrollToSection(schedulerRef)}
-                    className="text-gray-500 transition hover:text-gray-500/75"
+                    className="text-gray-500 transition hover:text-gray-500/75 cursor-pointer"
                   >
                     Scheduler
                   </li>

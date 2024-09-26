@@ -1,28 +1,10 @@
 import React, { useState } from "react";
-import { fcfs, sjf } from "../algorithms/schedulingAlgotrithms";
+import { fcfs, sjf } from "../algorithms/schedulingAlgorithms";
 import GanttCharts from "./GanttCharts";
 import CpuFanControl from "./CPUFanControl";
 
 const ProcessScheduler = () => {
-  const [selectedProcessList, setSelectedProcessList] = useState([
-    {
-      processName: "Default Process",
-      arrivalTime: 1,
-      burstTime: 1,
-      completionTime: 1,
-      waitingTime: 1,
-      turnAroundTime: 1,
-    },
-  ]);
-  const [selectedAlgorithm, setSelectedAlgorithm] = useState("FCFS");
-  const [runClicked, setRunClicked] = useState(false);
-  const [graphData, setGraphData] = useState(null);
-  const [formValues, setFormValues] = useState({
-    processName: "",
-    arrivalTime: "",
-    burstTime: "",
-  });
-
+  //list of algortithms implemented
   const algorithms = [
     "FCFS",
     "SJF",
@@ -33,14 +15,30 @@ const ProcessScheduler = () => {
     "HRRN",
   ];
 
+  //this will list all the processes added by the user to run in the cpu
+  const [selectedProcessList, setSelectedProcessList] = useState([]);
+  //check and handle various state variables
+  const [selectedAlgorithm, setSelectedAlgorithm] = useState("FCFS");
+  const [runClicked, setRunClicked] = useState(false);
+  const [graphData, setGraphData] = useState(null);
+
+  //keep track of the form values that the user enters
+  const [formValues, setFormValues] = useState({
+    processName: "",
+    arrivalTime: "",
+    burstTime: "",
+  });
+
+  //keep track of the selection event from the list of options
   const handleAlgorithmChange = (event) => {
     const value = event.target.value;
     setSelectedAlgorithm(value);
   };
 
+  //when add button is clicked it should add process to the process list
   const handleAddButton = (event) => {
-    event.preventDefault(); // Prevents the form from reloading the page
-    console.log(formValues); // This will log the current form values
+    event.preventDefault();
+    console.log(formValues);
     setSelectedProcessList([
       ...selectedProcessList,
       { ...formValues }, // Add the new process to the list
@@ -56,10 +54,12 @@ const ProcessScheduler = () => {
     }));
   };
 
+  //delete a process from the table
   const handleDelete = (index) => {
     const updatedAlgorithms = selectedProcessList.filter((_, i) => i !== index);
     setSelectedProcessList(updatedAlgorithms);
   };
+
   const handleRunButton = () => {
     let data;
     switch (selectedAlgorithm) {
@@ -74,9 +74,11 @@ const ProcessScheduler = () => {
         console.error("Unknown algorithm selected");
         return;
     }
+    console.log(data);
     setGraphData(data);
     setRunClicked(true);
   };
+
   const handleStopButton = () => {
     setRunClicked(false);
   };
@@ -134,7 +136,7 @@ const ProcessScheduler = () => {
                   className="w-full rounded-lg bg-gray-200 p-3"
                   placeholder="Arrival Time"
                   type="number"
-                  min="1"
+                  min="0"
                   required
                   name="arrivalTime"
                   value={formValues.arrivalTime}
@@ -172,9 +174,6 @@ const ProcessScheduler = () => {
         {/* Display the process list in a table */}
         <div className="lg:col-span-2 mt-8 p-2">
           <h4 className="text-2xl font-bold mb-4">Process List</h4>
-          <h1>
-            <i>You can delete the default process once you add new one</i>
-          </h1>
           <table className="min-w-full bg-white mt-2">
             <thead>
               <tr className="bg-indigo-600 text-white">
@@ -185,14 +184,13 @@ const ProcessScheduler = () => {
               </tr>
             </thead>
             <tbody>
-              {selectedProcessList.map((process, index) => (
-                <tr key={index}>
-                  <td className="border px-4 py-2">{process.processName}</td>
-                  <td className="border px-4 py-2">{process.arrivalTime}</td>
-                  <td className="border px-4 py-2">{process.burstTime}</td>
-                  <td className="border px-4 py-2">
-                    {/* Conditionally render the delete button if there is more than 1 process */}
-                    {selectedProcessList.length > 1 && (
+              {selectedProcessList.length > 0 ? (
+                selectedProcessList.map((process, index) => (
+                  <tr key={index}>
+                    <td className="border px-4 py-2">{process.processName}</td>
+                    <td className="border px-4 py-2">{process.arrivalTime}</td>
+                    <td className="border px-4 py-2">{process.burstTime}</td>
+                    <td className="border px-4 py-2">
                       <button
                         className="text-red-500 px-3 py-1 rounded"
                         onClick={() => handleDelete(index)}
@@ -212,10 +210,14 @@ const ProcessScheduler = () => {
                           />
                         </svg>
                       </button>
-                    )}
-                  </td>
+                    </td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td>No process</td>
                 </tr>
-              ))}
+              )}
             </tbody>
           </table>
           {/* show the gnatt chart when the run button is clicked*/}

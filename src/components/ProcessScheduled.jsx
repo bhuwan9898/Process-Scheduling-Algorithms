@@ -48,7 +48,7 @@ const ProcessScheduled = ({ graphData }) => {
     labels: [""],
     datasets: graphData.map((item, index) => ({
       label: item.processName,
-      data: [item.completionTime],
+      data: index==0?[item.endTime]:[item.endTime-item.startTime],
       backgroundColor: colors[index % colors.length],
       borderColor: colors[index % colors.length].replace("0.6", "1"),
       borderWidth: 1,

@@ -5,7 +5,6 @@ import ProcessScheduled from "./ProcessScheduled";
 function GanttCharts(props) {
   const [showPieChart, setShowPieChart] = useState(false);
   let graphData = props.graphData;
-  console.log(graphData);
   return (
     <div className="grid grid-cols-1 p-2 justify-items-center gap-4  lg:gap-8">
       <div className="h-96 w-full rounded-lg shadow-md bg-white">
@@ -81,8 +80,8 @@ function GanttCharts(props) {
               labels: graphData.map((data) => data.processName),
               datasets: [
                 {
-                  label: "Completion Time",
-                  data: graphData.map((data) => data.completionTime),
+                  label: "Turn Around Time",
+                  data: graphData.map((data) => data.turnAroundTime),
                   backgroundColor: [
                     "#2ec4b6",
                     "#ff6f61",
@@ -113,8 +112,8 @@ function GanttCharts(props) {
               labels: graphData.map((data) => data.processName),
               datasets: [
                 {
-                  label: "Completion Time",
-                  data: graphData.map((data) => data.completionTime),
+                  label: "Turn Around Time",
+                  data: graphData.map((data) => data.turnAroundTime),
                   backgroundColor: [
                     "#2ec4b6",
                     "#ff6f61",

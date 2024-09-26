@@ -2,37 +2,39 @@ export function fcfs(processList) {
   // Sort processes based on arrival time
   processList.sort((a, b) => Number(a.arrivalTime) - Number(b.arrivalTime)); // Ensure arrivalTime is a number
 
-  let currentTime = 0; // Tracks the current time
+  let startTime = 0; // Tracks the current time
   const result = [];
 
-  for (const process of processList) {
+  for (let i = 0; i < processList.length; i++) {
+    const process = processList[i];
+
     // Convert burstTime and arrivalTime to numbers
     const burstTime = Number(process.burstTime);
+
+    // Ensure that the arrival time for the first process is 0
     const arrivalTime = Number(process.arrivalTime);
 
-    // Calculate the completion time
-    const completionTime = currentTime + burstTime; // Ensure addition is done with numbers
-
     // Calculate waiting time
-    const waitingTime = Math.abs(currentTime - arrivalTime);
+    const waitingTime = i === 0 ? 0 : Math.abs(arrivalTime-startTime);
 
     // Calculate turnaround time
-    const turnaroundTime = completionTime - arrivalTime;
+    const turnAroundTime = waitingTime + burstTime;
 
+    //Calculate end time
+    const endTime = startTime + burstTime;
+    
     // Add results for the current process
     result.push({
       processName: process.processName,
       arrivalTime: arrivalTime,
       burstTime: burstTime,
-      completionTime: completionTime,
+      startTime: startTime,
+      endTime:endTime,
       waitingTime: waitingTime,
-      turnAroundTime: turnaroundTime,
+      turnAroundTime: turnAroundTime,
     });
-
-    // Update current time
-    currentTime = completionTime;
+    startTime = endTime;
   }
-
   return result; // Return the results array
 }
 
