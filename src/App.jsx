@@ -7,11 +7,13 @@ import Sections from "./components/Sections";
 import Navigation from "./components/Navigation";
 
 import React from "react";
+import TestChart from "./components/TestChart";
 function App() {
   const sectionsRef = useRef(null);
   const schedulerRef = useRef(null);
   return (
     <>
+    
       <Navigation sectionsRef={sectionsRef} schedulerRef={schedulerRef} />
       <div ref={sectionsRef}>
         <Sections />

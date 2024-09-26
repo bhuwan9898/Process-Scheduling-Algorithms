@@ -2,7 +2,7 @@ export function fcfs(processList) {
   // Sort processes based on arrival time
   processList.sort((a, b) => Number(a.arrivalTime) - Number(b.arrivalTime)); // Ensure arrivalTime is a number
 
-  let startTime = 0; // Tracks the current time
+  let startTime = 1; // Tracks the current time
   const result = [];
 
   for (let i = 0; i < processList.length; i++) {

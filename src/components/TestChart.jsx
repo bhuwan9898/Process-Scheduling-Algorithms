@@ -19,7 +19,7 @@ ChartJS.register(
   Legend
 );
 
-const ProcessScheduled = ({graphData}) => {
+const TestChart = () => {
   const colors = [
     "#2ec4b6",
     "#ff6f61",
@@ -36,38 +36,77 @@ const ProcessScheduled = ({graphData}) => {
     "#ff595e",
   ];
 
+  const graphData = [
+    {
+      processName: "Process A",
+      startTime: 2,
+      endTime: 5,
+    },
+    {
+      processName: "Process B",
+      startTime: 5,
+      endTime: 8,
+    },
+    {
+      processName: "Process C",
+      startTime: 8,
+      endTime: 12,
+    },
+    {
+      processName: "Process D",
+      startTime: 12,
+      endTime: 15,
+    },
+    {
+      processName: "Process E",
+      startTime: 15,
+      endTime: 20,
+    },
+    {
+      processName: "Process F",
+      startTime: 20,
+      endTime: 26,
+    },
+    {
+      processName: "Process G",
+      startTime: 26,
+      endTime: 30,
+    },
+  ];
+
+  if (!graphData || graphData.length === 0) {
+    return <div>No data available</div>;
+  }
 
   const data = {
-    labels: graphData.map((item) => item.processName), // Use process names as labels
+    labels: graphData.map((item) => item.processName),
     datasets: [
       {
-        label: "Execution Time Period",
+        label: "Execution Time",
         data: graphData.map((item) => ({
-          x: [item.startTime, item.endTime], // Define each bar as a range from start to end
-          y: item.processName,               // Process name on the Y-axis
+          x: [item.startTime, item.endTime], // Setting the start and end times
+          y: item.processName,
         })),
         backgroundColor: graphData.map((_, index) => colors[index % colors.length]),
         borderColor: graphData.map((_, index) => colors[index % colors.length].replace("0.6", "1")),
         borderWidth: 1,
-         // Adjust the width of the bars
       },
     ],
   };
 
   const options = {
-    indexAxis: "y", // Horizontal chart
+    indexAxis: "y", // This makes the chart horizontal
     responsive: true,
     scales: {
       x: {
-        type: "linear", // Linear scale for time
+        type: "linear", // Use a linear scale for the x-axis
         position: "bottom",
-        min: 1, // Start x-axis from 1
         title: {
           display: true,
           text: "Time (in seconds)",
         },
         ticks: {
-          stepSize: 1,  // Adjust to control interval ticks if necessary
+          stepSize: 1,
         },
       },
       y: {
@@ -91,4 +130,5 @@ const ProcessScheduled = ({graphData}) => {
   return <Bar data={data} options={options} />;
 };
 
-export default ProcessScheduled;
+export default TestChart;
+
