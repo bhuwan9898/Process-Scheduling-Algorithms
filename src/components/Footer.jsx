@@ -1,6 +1,11 @@
 import React from "react";
 
 function Footer() {
+  //get the date and year for the copyright of the footer
+  let currentDate = new Date();
+
+  // Get the current year
+  let currentYear = currentDate.getFullYear();
   return (
     <div>
       <footer className="bg-gray-50">
@@ -29,7 +34,7 @@ function Footer() {
             </div>
 
             <p className="mt-4 text-center text-sm text-gray-500 lg:mt-0 lg:text-right">
-              Copyright &copy; 2022. All rights reserved.
+              Copyright &copy; {currentYear}. All rights reserved.
             </p>
           </div>
         </div>

@@ -19,8 +19,8 @@ const ProcessScheduler = () => {
   const [graphData, setGraphData] = useState(null);
   const [formValues, setFormValues] = useState({
     processName: "",
-    arrivalTime: 0,
-    burstTime: 0,
+    arrivalTime: "",
+    burstTime: "",
   });
 
   const algorithms = [
@@ -45,7 +45,7 @@ const ProcessScheduler = () => {
       ...selectedProcessList,
       { ...formValues }, // Add the new process to the list
     ]);
-    setFormValues({ processName: "", arrivalTime: 0, burstTime: 0 }); // Clear the form fields
+    setFormValues({ processName: "", arrivalTime: "", burstTime: "" }); // Clear the form fields
   };
 
   const handleInputChange = (event) => {
@@ -134,7 +134,8 @@ const ProcessScheduler = () => {
                   className="w-full rounded-lg bg-gray-200 p-3"
                   placeholder="Arrival Time"
                   type="number"
-                  min="0"
+                  min="1"
+                  required
                   name="arrivalTime"
                   value={formValues.arrivalTime}
                   onChange={handleInputChange}
@@ -145,6 +146,7 @@ const ProcessScheduler = () => {
                   placeholder="Burst Time"
                   type="number"
                   min="1"
+                  required
                   name="burstTime"
                   value={formValues.burstTime}
                   onChange={handleInputChange}
@@ -153,7 +155,7 @@ const ProcessScheduler = () => {
                 <div className="mt-4">
                   <button
                     type="submit"
-                    className="inline-block w-full rounded-3xl bg-indigo-600 px-5 py-3 font-medium text-white sm:w-auto"
+                    className="inline-block w-full  rounded-3xl bg-green-600 px-5 py-3 font-medium text-white "
                   >
                     Add Process
                   </button>
