@@ -15,21 +15,21 @@ export function fcfs(processList) {
     const arrivalTime = Number(process.arrivalTime);
 
     // Calculate waiting time
-    const waitingTime = i === 0 ? 0 : Math.abs(arrivalTime-startTime);
+    const waitingTime = i === 0 ? 0 : Math.abs(arrivalTime - startTime);
 
     // Calculate turnaround time
     const turnAroundTime = waitingTime + burstTime;
 
     //Calculate end time
     const endTime = startTime + burstTime;
-    
+
     // Add results for the current process
     result.push({
       processName: process.processName,
       arrivalTime: arrivalTime,
       burstTime: burstTime,
       startTime: startTime,
-      endTime:endTime,
+      endTime: endTime,
       waitingTime: waitingTime,
       turnAroundTime: turnAroundTime,
     });
