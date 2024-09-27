@@ -61,7 +61,7 @@ const ProcessScheduled = ({graphData}) => {
       x: {
         type: "linear", // Linear scale for time
         position: "bottom",
-        min: 1, // Start x-axis from 1
+        min: graphData[0].startTime, // Start x-axis from 1
         title: {
           display: true,
           text: "Time (in seconds)",

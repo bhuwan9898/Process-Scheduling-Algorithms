@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import { fcfs, sjf } from "../algorithms/schedulingAlgorithms";
+import { fcfs, sjf, ljf } from "../algorithms/schedulingAlgorithms";
 import GanttCharts from "./GanttCharts";
 import CpuFanControl from "./CPUFanControl";
-
+import Modal from "./Modal";
 const ProcessScheduler = () => {
   //list of algortithms implemented
   const algorithms = [
@@ -21,7 +21,7 @@ const ProcessScheduler = () => {
   const [selectedAlgorithm, setSelectedAlgorithm] = useState("FCFS");
   const [runClicked, setRunClicked] = useState(false);
   const [graphData, setGraphData] = useState(null);
-
+  const [isModalOpen, setIsModalOpen] = useState(false);
   //keep track of the form values that the user enters
   const [formValues, setFormValues] = useState({
     processName: "",
@@ -69,6 +69,9 @@ const ProcessScheduler = () => {
       case "SJF":
         data = sjf(selectedProcessList);
         break;
+      case "LJF":
+        data = ljf(selectedProcessList);
+        break;
       // Other functions accordingly...
       default:
         console.error("Unknown algorithm selected");
@@ -81,6 +84,14 @@ const ProcessScheduler = () => {
 
   const handleStopButton = () => {
     setRunClicked(false);
+  };
+
+  const toggleModal = () => {
+    setIsModalOpen((prev) => !prev);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
   };
 
   return (
@@ -114,7 +125,29 @@ const ProcessScheduler = () => {
 
           <div className="flex gap-3 items-center mt-8 p-4 rounded-md">
             <p className="text-sm font-semibold">Selected Algorithm:</p>
-            <p className="text-lg font-bold">{selectedAlgorithm}</p>
+            <p className="text-md font-bold ">{selectedAlgorithm}</p>
+            <button onClick={toggleModal} className="text-indigo-600">
+              Learn more
+            </button>
+            <Modal open={isModalOpen} selectedAlgorithm={selectedAlgorithm}>
+              <div className="flex justify-between items-center mb-4">
+                <h2 className="text-lg font-bold">Short Info</h2>
+                <button onClick={closeModal} className="text-red-500">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                    className="size-6"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M5.47 5.47a.75.75 0 0 1 1.06 0L12 10.94l5.47-5.47a.75.75 0 1 1 1.06 1.06L13.06 12l5.47 5.47a.75.75 0 1 1-1.06 1.06L12 13.06l-5.47 5.47a.75.75 0 0 1-1.06-1.06L10.94 12 5.47 6.53a.75.75 0 0 1 0-1.06Z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                </button>
+              </div>
+            </Modal>
           </div>
           <div className="w-full">
             <div className="rounded-lg bg-white lg:col-span-3 lg:p-12">
@@ -174,6 +207,9 @@ const ProcessScheduler = () => {
         {/* Display the process list in a table */}
         <div className="lg:col-span-2 mt-8 p-2">
           <h4 className="text-2xl font-bold mb-4">Process List</h4>
+          <h6>
+            <i>You need to re-run CPU every time you add or delete a process</i>{" "}
+          </h6>
           <table className="min-w-full bg-white mt-2">
             <thead>
               <tr className="bg-indigo-600 text-white">
