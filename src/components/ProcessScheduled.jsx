@@ -49,7 +49,6 @@ const ProcessScheduled = ({graphData}) => {
         backgroundColor: graphData.map((_, index) => colors[index % colors.length]),
         borderColor: graphData.map((_, index) => colors[index % colors.length].replace("0.6", "1")),
         borderWidth: 1,
-         // Adjust the width of the bars
       },
     ],
   };
