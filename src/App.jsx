@@ -14,10 +14,10 @@ function App() {
   const schedulerRef = useRef(null);
   return (
     <>
-      {/* <Navigation sectionsRef={sectionsRef} schedulerRef={schedulerRef} />
+      <Navigation sectionsRef={sectionsRef} schedulerRef={schedulerRef} />
       <div ref={sectionsRef}>
         <Sections />
-      </div> */}
+      </div>
       <div ref={schedulerRef}>
         <ProcessScheduler />
       </div>
