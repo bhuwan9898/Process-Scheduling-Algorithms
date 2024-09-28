@@ -12,10 +12,6 @@ export default function Modal({ open, onClose, selectedAlgorithm, children }) {
       (alg) => alg.name.toLowerCase() === name.toLowerCase()
     );
 
-    // Log selectedAlgorithm and algorithm for debugging
-    console.log("Selected Algorithm:", name);
-    console.log("Matching Algorithm:", algorithm);
-
     // Return the description if found, otherwise return a not found message
     return algorithm ? algorithm.description : "Algorithm not found.";
   }

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { fcfs, sjf, ljf } from "../algorithms/schedulingAlgorithms";
+import { fcfs, sjf, ljf, roundRobin } from "../algorithms/schedulingAlgorithms";
 import GanttCharts from "./GanttCharts";
 import CpuFanControl from "./CPUFanControl";
 import Modal from "./Modal";
@@ -22,6 +22,8 @@ const ProcessScheduler = () => {
   const [runClicked, setRunClicked] = useState(false);
   const [graphData, setGraphData] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [timeQuantum, setTimeQuantum] = useState(null);
+  const [isTimeQuantumSet, setIsTimeQuantumSet] = useState(false);
   //keep track of the form values that the user enters
   const [formValues, setFormValues] = useState({
     processName: "",
@@ -38,7 +40,6 @@ const ProcessScheduler = () => {
   //when add button is clicked it should add process to the process list
   const handleAddButton = (event) => {
     event.preventDefault();
-    console.log(formValues);
     setSelectedProcessList([
       ...selectedProcessList,
       { ...formValues }, // Add the new process to the list
@@ -59,6 +60,14 @@ const ProcessScheduler = () => {
     const updatedAlgorithms = selectedProcessList.filter((_, i) => i !== index);
     setSelectedProcessList(updatedAlgorithms);
   };
+  const handleRoundRobinInputChange = (e) => {
+    e.preventDefault();
+    const value = parseInt(e.target.value, 10); // Convert string input to a number
+    if (!isNaN(value)) {
+      // Ensure the value is a valid number
+      setTimeQuantum(value); // Store the time quantum as a number
+    }
+  };
 
   const handleRunButton = () => {
     let data;
@@ -72,12 +81,14 @@ const ProcessScheduler = () => {
       case "LJF":
         data = ljf(selectedProcessList);
         break;
+      case "Round Robin":
+        data = roundRobin(selectedProcessList, timeQuantum);
+        break;
       // Other functions accordingly...
       default:
         console.error("Unknown algorithm selected");
         return;
     }
-    console.log(data);
     setGraphData(data);
     setRunClicked(true);
   };
@@ -122,6 +133,40 @@ const ProcessScheduler = () => {
               ))}
             </select>
           </form>
+          {selectedAlgorithm === "Round Robin" && !isTimeQuantumSet && (
+            <>
+              <label htmlFor="timeQuantum">Time Quantum</label>
+              <input
+                className="w-full rounded-lg bg-gray-200 p-3"
+                placeholder="Time Quantum"
+                type="number"
+                min="1"
+                required
+                name="timeQuantum"
+                value={timeQuantum}
+                onChange={handleRoundRobinInputChange}
+              />
+              <button
+                onClick={() => setIsTimeQuantumSet(true)}
+                className="mt-1 p-2 bg-green-400 rounded-md"
+              >
+                Set
+              </button>
+            </>
+          )}
+          {isTimeQuantumSet && (
+            <div className="flex gap-5 mt-3 items-center">
+              <p>
+                Time Quantum is set to: <b> {timeQuantum} </b>
+              </p>
+              <button
+                onClick={() => setIsTimeQuantumSet(false)}
+                className="p-1 text-blue-500"
+              >
+                Edit
+              </button>
+            </div>
+          )}
 
           <div className="flex gap-3 items-center mt-8 p-4 rounded-md">
             <p className="text-sm font-semibold">Selected Algorithm:</p>
@@ -186,7 +231,6 @@ const ProcessScheduler = () => {
                   value={formValues.burstTime}
                   onChange={handleInputChange}
                 />
-
                 <div className="mt-4">
                   <button
                     type="submit"

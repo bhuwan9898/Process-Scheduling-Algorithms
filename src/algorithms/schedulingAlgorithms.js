@@ -116,68 +116,56 @@ export function ljf(processList) {
     });
     startTime = endTime;
   }
-  return result; 
-}// Return the results array
+  return result;
+} // Return the results array
 
-const processes = [
-    { processName: 'Process 1', arrivalTime: '0', burstTime: '2' },
-    { processName: 'Process 2', arrivalTime: '1', burstTime: '3' },
-    { processName: 'Process 3', arrivalTime: '2', burstTime: '4' },
-    { processName: 'Process 4', arrivalTime: '3', burstTime: '1' },
-    { processName: 'Process 5', arrivalTime: '4', burstTime: '5' },
-  ];
-  
-  roundRobin(processes, 2);
-  
-  function roundRobin(processList, timeQuantum) {
-    // Sort by arrival time
-    processList.sort((a, b) => Number(a.arrivalTime) - Number(b.arrivalTime));
-    
-    let totalTime = 0; // Track overall time
-    const queue = processList.map(process => ({
-      ...process,
-      remainingTime: Number(process.burstTime),
-      startTime: null,
-      endTime: null,
-    }));
-  
-    const result = [];
-  
-    while (queue.length > 0) {
-      let process = queue.shift();
-  
-      if (process.remainingTime > 0) {
-        // If it's the first time this process runs, set start time
-        if (process.startTime === null) {
-          process.startTime = Math.max(Number(process.arrivalTime), totalTime); 
-        }
-  
-        // Calculate time spent on this process in this round
-        let timeSpent = Math.min(timeQuantum, process.remainingTime);
-        
-        // Update total time spent and the process's remaining time
-        totalTime += timeSpent;
-        process.remainingTime -= timeSpent;
-  
-        // If the process finishes, set its end time
-        if (process.remainingTime === 0) {
-          process.endTime = totalTime;
-          result.push({
-            processName: process.processName,
-            startTime: process.startTime,
-            endTime: process.endTime,
-            turnaroundTime: process.endTime - Number(process.arrivalTime),
-            waitingTime: process.endTime - Number(process.arrivalTime) - Number(process.burstTime),
-          });
-        } else {
-          // Otherwise, push the process back to the end of the queue
-          queue.push(process);
-        }
-      }
+export function roundRobin(processList, timeQuantum) {
+  // Sort processes by arrival time
+  processList.sort((a, b) => Number(a.arrivalTime) - Number(b.arrivalTime));
+
+  let totalTime = 0; // Track overall time
+  const queue = processList.map((process) => ({
+    ...process,
+    remainingTime: Number(process.burstTime), // Track remaining burst time
+    startTime: null,
+    endTime: null,
+  }));
+  let startTime = Number(processList[0].arrivalTime);
+  const result = [];
+
+  while (queue.length > 0) {
+    let process = queue.shift();
+    // Time spent on this process in this round
+    let timeSpent =
+      process.remainingTime >= timeQuantum
+        ? timeQuantum
+        : process.remainingTime;
+    console.log("Time Spent:", timeSpent);
+    // Update total time and process's remaining time
+    totalTime += timeSpent;
+    process.remainingTime -= timeSpent;
+    console.log("Total Time:", totalTime);
+    // Set end time for this process in this round
+    const endTime = startTime + timeSpent;
+    const turnAroundTime = totalTime + timeSpent;
+
+    // Add to result log
+    result.push({
+      processName: process.processName,
+      arrivalTime: process.arrivalTime,
+      burstTime: Number(process.burstTime),
+      startTime: startTime,
+      endTime: endTime,
+      remainingTime: process.remainingTime,
+      waitingTime: totalTime,
+      turnAroundTime: turnAroundTime,
+    });
+    startTime = endTime;
+    // If the process still has time left, push it back to the queue
+    if (process.remainingTime > 0) {
+      queue.push(process);
     }
-  
-    console.log("Scheduling Result:", result);
-    return result;
   }
-  
-  
+  console.log(result);
+  return result;
+}
