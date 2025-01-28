@@ -70,27 +70,38 @@ const ProcessScheduler = () => {
   };
 
   const handleRunButton = () => {
+    console.log(selectedProcessList);
     let data;
-    switch (selectedAlgorithm) {
-      case "FCFS":
-        data = fcfs(selectedProcessList);
-        break;
-      case "SJF":
-        data = sjf(selectedProcessList);
-        break;
-      case "LJF":
-        data = ljf(selectedProcessList);
-        break;
-      case "Round Robin":
-        data = roundRobin(selectedProcessList, timeQuantum);
-        break;
-      // Other functions accordingly...
-      default:
-        console.error("Unknown algorithm selected");
-        return;
+    // spring boot backend api end point
+    const url = `http://localhost:8080/schedule?type=${selectedAlgorithm}`;
+
+    // Options for the fetch request
+    const options = {
+      method: "POST", // HTTP method
+      headers: {
+        "Content-Type": "application/json", // JSON format
+      },
+      body: JSON.stringify(selectedProcessList), // Convert JavaScript object to JSON string
+    };
+
+    // Sending the POST request
+    fetch(url, options)
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        return response.json(); // Parse JSON response
+      })
+      .then((responseData) => {
+        data = responseData;
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+    if (data) {
+      setGraphData(data);
+      setRunClicked(true);
     }
-    setGraphData(data);
-    setRunClicked(true);
   };
 
   const handleStopButton = () => {
