@@ -69,38 +69,38 @@ const ProcessScheduler = () => {
     }
   };
 
-  const handleRunButton = () => {
-    console.log(selectedProcessList);
-    let data;
-    // spring boot backend api end point
-    const url = `http://localhost:8080/schedule?type=${selectedAlgorithm}`;
+  const handleRunButton = async () => {
+    try {
+      // spring boot backend api end point
+      const url = `http://localhost:8080/schedule?type=${selectedAlgorithm}`;
 
-    // Options for the fetch request
-    const options = {
-      method: "POST", // HTTP method
-      headers: {
-        "Content-Type": "application/json", // JSON format
-      },
-      body: JSON.stringify(selectedProcessList), // Convert JavaScript object to JSON string
-    };
+      // Options for the fetch request
+      const options = {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(selectedProcessList),
+      };
 
-    // Sending the POST request
-    fetch(url, options)
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error(`HTTP error! Status: ${response.status}`);
-        }
-        return response.json(); // Parse JSON response
-      })
-      .then((responseData) => {
-        data = responseData;
-      })
-      .catch((error) => {
-        console.error("Error:", error);
-      });
-    if (data) {
+      // Sending the POST request and awaiting response
+      const response = await fetch(url, options);
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+
+      const data = await response.json();
+
+      if (!data) {
+        console.log("No graph data");
+        return;
+      }
       setGraphData(data);
       setRunClicked(true);
+    } catch (error) {
+      console.error("Error:", error);
+      // I can handle error with some error jsx component
     }
   };
 
@@ -312,7 +312,12 @@ const ProcessScheduler = () => {
             </tbody>
           </table>
           {/* show the gnatt chart when the run button is clicked*/}
-          {runClicked && <GanttCharts graphData={graphData} />}
+          {runClicked && (
+            <>
+              {console.log(graphData)}
+              <GanttCharts graphData={graphData} />
+            </>
+          )}
         </div>
       </div>
     </>
