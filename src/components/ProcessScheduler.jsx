@@ -70,6 +70,7 @@ const ProcessScheduler = () => {
   };
 
   const handleRunButton = async () => {
+    // checking if the api request passes 
     try {
       // spring boot backend api end point
       const url = `http://localhost:8080/schedule?type=${selectedAlgorithm}`;
