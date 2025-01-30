@@ -15,6 +15,10 @@ function App() {
   return (
     <>
       <Navigation sectionsRef={sectionsRef} schedulerRef={schedulerRef} />
+      <div className="flex justify-center items-center p-3 font-serif text-xl">
+        This is the version implemented only in JS, the concrete one with the
+        SpringBoot will be up soon!
+      </div>
       <div ref={sectionsRef}>
         <Sections />
       </div>
