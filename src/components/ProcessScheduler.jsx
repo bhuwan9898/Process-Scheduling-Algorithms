@@ -22,7 +22,7 @@ const ProcessScheduler = () => {
   const [runClicked, setRunClicked] = useState(false);
   const [graphData, setGraphData] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [timeQuantum, setTimeQuantum] = useState(null);
+  const [timeQuantum, setTimeQuantum] = useState(0);
   const [isTimeQuantumSet, setIsTimeQuantumSet] = useState(false);
   //keep track of the form values that the user enters
   const [formValues, setFormValues] = useState({
@@ -73,7 +73,7 @@ const ProcessScheduler = () => {
     // checking if the api request passes 
     try {
       // spring boot backend api end point
-      const url = `http://localhost:8080/schedule?type=${selectedAlgorithm}`;
+      const url = `http://localhost:8080/schedule?type=${selectedAlgorithm}?timeQuantum=${timeQuantum}`;
 
       // Options for the fetch request
       const options = {
