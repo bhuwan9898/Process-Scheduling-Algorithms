@@ -9,7 +9,7 @@ const ProcessScheduler = () => {
     "FCFS",
     "SJF",
     "LJF",
-    "Round Robin",
+    "ROUND_ROBIN",
     "SRTF",
     "LRTF",
     "HRRN",
@@ -73,7 +73,7 @@ const ProcessScheduler = () => {
     // checking if the api request passes 
     try {
       // spring boot backend api end point
-      const url = `http://localhost:8080/schedule?type=${selectedAlgorithm}?timeQuantum=${timeQuantum}`;
+      const url = `http://localhost:8080/schedule?type=${selectedAlgorithm}&timeQuantum=${timeQuantum?timeQuantum:0}`;
 
       // Options for the fetch request
       const options = {
@@ -145,7 +145,7 @@ const ProcessScheduler = () => {
               ))}
             </select>
           </form>
-          {selectedAlgorithm === "Round Robin" && !isTimeQuantumSet && (
+          {selectedAlgorithm === "ROUND_ROBIN" && !isTimeQuantumSet && (
             <>
               <label htmlFor="timeQuantum">Time Quantum</label>
               <input
