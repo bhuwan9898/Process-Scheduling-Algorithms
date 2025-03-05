@@ -1,10 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { fcfs, sjf, ljf, roundRobin } from "../algorithms/schedulingAlgorithms";
 import GanttCharts from "./GanttCharts";
 import CpuFanControl from "./CPUFanControl";
 import Modal from "./Modal";
+
 const ProcessScheduler = () => {
-  //list of algortithms implemented
   const algorithms = [
     "FCFS",
     "SJF",
@@ -15,36 +15,62 @@ const ProcessScheduler = () => {
     "HRRN",
   ];
 
-  //this will list all the processes added by the user to run in the cpu
   const [selectedProcessList, setSelectedProcessList] = useState([]);
-  //check and handle various state variables
   const [selectedAlgorithm, setSelectedAlgorithm] = useState("FCFS");
-  const [runClicked, setRunClicked] = useState(false);
   const [graphData, setGraphData] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [timeQuantum, setTimeQuantum] = useState(0);
   const [isTimeQuantumSet, setIsTimeQuantumSet] = useState(false);
-  //keep track of the form values that the user enters
   const [formValues, setFormValues] = useState({
     processName: "",
     arrivalTime: "",
     burstTime: "",
   });
 
-  //keep track of the selection event from the list of options
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const url = `http://localhost:8080/schedule?type=${selectedAlgorithm}&timeQuantum=${timeQuantum ? timeQuantum : 0}`;
+        const options = {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(selectedProcessList),
+        };
+
+        const response = await fetch(url, options);
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        setGraphData(data);
+      } catch (error) {
+        console.error("Error:", error);
+      }
+    };
+
+    if (selectedProcessList.length > 0) {
+      fetchData();
+    } else {
+      setGraphData(null);
+    }
+  }, [selectedProcessList, selectedAlgorithm, timeQuantum]);
+
   const handleAlgorithmChange = (event) => {
     const value = event.target.value;
     setSelectedAlgorithm(value);
   };
 
-  //when add button is clicked it should add process to the process list
   const handleAddButton = (event) => {
     event.preventDefault();
     setSelectedProcessList([
       ...selectedProcessList,
-      { ...formValues }, // Add the new process to the list
+      { ...formValues },
     ]);
-    setFormValues({ processName: "", arrivalTime: "", burstTime: "" }); // Clear the form fields
+    setFormValues({ processName: "", arrivalTime: "", burstTime: "" });
   };
 
   const handleInputChange = (event) => {
@@ -55,58 +81,17 @@ const ProcessScheduler = () => {
     }));
   };
 
-  //delete a process from the table
   const handleDelete = (index) => {
     const updatedAlgorithms = selectedProcessList.filter((_, i) => i !== index);
     setSelectedProcessList(updatedAlgorithms);
   };
+
   const handleRoundRobinInputChange = (e) => {
     e.preventDefault();
-    const value = parseInt(e.target.value, 10); // Convert string input to a number
+    const value = parseInt(e.target.value, 10);
     if (!isNaN(value)) {
-      // Ensure the value is a valid number
-      setTimeQuantum(value); // Store the time quantum as a number
+      setTimeQuantum(value);
     }
-  };
-
-  const handleRunButton = async () => {
-    // checking if the api request passes 
-    try {
-      // spring boot backend api end point
-      const url = `http://localhost:8080/schedule?type=${selectedAlgorithm}&timeQuantum=${timeQuantum?timeQuantum:0}`;
-
-      // Options for the fetch request
-      const options = {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(selectedProcessList),
-      };
-
-      // Sending the POST request and awaiting response
-      const response = await fetch(url, options);
-
-      if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
-      }
-
-      const data = await response.json();
-
-      if (!data) {
-        console.log("No graph data");
-        return;
-      }
-      setGraphData(data);
-      setRunClicked(true);
-    } catch (error) {
-      console.error("Error:", error);
-      // I can handle error with some error jsx component
-    }
-  };
-
-  const handleStopButton = () => {
-    setRunClicked(false);
   };
 
   const toggleModal = () => {
@@ -253,14 +238,10 @@ const ProcessScheduler = () => {
                 </div>
               </form>
             </div>
-            <CpuFanControl
-              onRunClick={handleRunButton}
-              onStopClick={handleStopButton}
-            />
+            <CpuFanControl />
           </div>
         </div>
 
-        {/* Display the process list in a table */}
         <div className="lg:col-span-2 mt-8 p-2">
           <h4 className="text-2xl font-bold mb-4">Process List</h4>
           <h6>
@@ -312,13 +293,7 @@ const ProcessScheduler = () => {
               )}
             </tbody>
           </table>
-          {/* show the gnatt chart when the run button is clicked*/}
-          {runClicked && (
-            <>
-              {console.log(graphData)}
-              <GanttCharts graphData={graphData} />
-            </>
-          )}
+          {graphData && <GanttCharts graphData={graphData} />}
         </div>
       </div>
     </>

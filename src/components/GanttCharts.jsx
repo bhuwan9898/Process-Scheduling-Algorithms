@@ -1,10 +1,11 @@
 import { useState } from "react";
-import { Chart as ChartJS } from "chart.js/auto";
 import { Bar, Doughnut, Line } from "react-chartjs-2";
 import ProcessScheduled from "./ProcessScheduled";
+
 function GanttCharts(props) {
   const [showPieChart, setShowPieChart] = useState(false);
   let graphData = props.graphData;
+  
   return (
     <div className="grid grid-cols-1 p-2 justify-items-center gap-4  lg:gap-8">
       <div className="h-96 w-full rounded-lg shadow-md bg-white">
