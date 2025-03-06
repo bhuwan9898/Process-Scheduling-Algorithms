@@ -3,7 +3,7 @@ import { fcfs, sjf, ljf, roundRobin } from "../algorithms/schedulingAlgorithms";
 import GanttCharts from "./GanttCharts";
 import CpuFanControl from "./CPUFanControl";
 import Modal from "./Modal";
-
+import noProcess from "../../public/noProcess.jpeg";
 const ProcessScheduler = () => {
   const algorithms = [
     "FCFS",
@@ -30,7 +30,9 @@ const ProcessScheduler = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const url = `http://localhost:8080/schedule?type=${selectedAlgorithm}&timeQuantum=${timeQuantum ? timeQuantum : 0}`;
+        const url = `http://localhost:8080/schedule?type=${selectedAlgorithm}&timeQuantum=${
+          timeQuantum ? timeQuantum : 0
+        }`;
         const options = {
           method: "POST",
           headers: {
@@ -66,10 +68,7 @@ const ProcessScheduler = () => {
 
   const handleAddButton = (event) => {
     event.preventDefault();
-    setSelectedProcessList([
-      ...selectedProcessList,
-      { ...formValues },
-    ]);
+    setSelectedProcessList([...selectedProcessList, { ...formValues }]);
     setFormValues({ processName: "", arrivalTime: "", burstTime: "" });
   };
 
@@ -257,7 +256,7 @@ const ProcessScheduler = () => {
               </tr>
             </thead>
             <tbody>
-              {selectedProcessList.length > 0 ? (
+              {selectedProcessList && selectedProcessList.length > 0 ? (
                 selectedProcessList.map((process, index) => (
                   <tr key={index}>
                     <td className="border px-4 py-2">{process.processName}</td>
@@ -288,11 +287,19 @@ const ProcessScheduler = () => {
                 ))
               ) : (
                 <tr>
-                  <td>No process</td>
+                  <td colSpan="4" className="text-center py-4">
+                    <div className="flex flex-col items-center justify-center h-full">
+                      <iframe src="https://lottie.host/embed/3c91c8fd-bbc3-44f7-b9e9-4802d9e84825/llQ7uC1XMe.lottie"></iframe>
+                      <p className="mt-4 text-gray-500 text-lg font-semibold">
+                        No processes added yet
+                      </p>
+                    </div>
+                  </td>
                 </tr>
               )}
             </tbody>
           </table>
+
           {graphData && <GanttCharts graphData={graphData} />}
         </div>
       </div>
