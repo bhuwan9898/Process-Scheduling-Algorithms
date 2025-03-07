@@ -25,9 +25,12 @@ const ProcessScheduler = () => {
     processName: "",
     arrivalTime: "",
     burstTime: "",
+    turnAroundTime: "", 
+    waitingTime: "",
   });
 
   useEffect(() => {
+
     const fetchData = async () => {
       try {
         const url = `http://localhost:8080/schedule?type=${selectedAlgorithm}&timeQuantum=${
@@ -42,12 +45,16 @@ const ProcessScheduler = () => {
         };
 
         const response = await fetch(url, options);
-
+        
+        if (response.ok) {
+          console.log(`HTTP  Status: ${response.status}`);
+        }
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);
         }
 
         const data = await response.json();
+        console.log("Data:", data);
         setGraphData(data);
       } catch (error) {
         console.error("Error:", error);
